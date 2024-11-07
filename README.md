@@ -37,6 +37,11 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 ## Prisma
 
+add a .env file in root of repo
+
+add this here
+DATABASE_URL="mysql://username:password@host:3306/myhome?schema=public"
+
 After a change to the schema.prisma
 npx prisma format to make it look nice
 npx prisma migrate dev to create and apply the migrations to the database
