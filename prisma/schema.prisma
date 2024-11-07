@@ -1,0 +1,58 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Measurement {
+  id         Int      @id @default(autoincrement())
+  insertedAt DateTime @default(now())
+  recordedAt DateTime
+  measure    Decimal  @db.Decimal(9, 2)
+  unit       Unit     @relation(fields: [unitId], references: [id])
+  unitId     Int
+  device     Device   @relation(fields: [deviceId], references: [id])
+  deviceId   Int
+}
+
+model Unit {
+  id           Int           @id @default(autoincrement())
+  name         String
+  dimension    String
+  measurements Measurement[]
+}
+
+model Device {
+  id           Int           @id @default(autoincrement())
+  name         String
+  description  String?
+  measurements Measurement[]
+  host         Host          @relation(fields: [hostId], references: [id])
+  hostId       Int
+}
+
+model Host {
+  id          Int      @id @default(autoincrement())
+  hostname    String
+  ipAddress   String   @unique
+  devices     Device[]
+  location    Location @relation(fields: [locationId], references: [id])
+  locationId  Int
+  description String?  @db.VarChar(2047)
+}
+
+model Location {
+  id          Int     @id @default(autoincrement())
+  hosts       Host[]
+  name        String
+  description String? @db.VarChar(2047)
+}
