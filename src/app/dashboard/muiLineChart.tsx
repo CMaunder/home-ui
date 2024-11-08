@@ -1,35 +1,21 @@
 "use client";
 import { LineChart } from "@mui/x-charts/LineChart";
-type Measurement = {
-  id: number;
-  insertedAt: Date;
-  recordedAt: string;
-  measure: number;
-  unitId: number;
-  deviceId: number;
-};
 
 export default function MuiLineChart({
-  data,
+  xData,
+  yData,
   displayUnit,
 }: {
-  data: Measurement[];
+  xData: any;
+  yData: any;
   displayUnit: string;
 }) {
+  console.log(yData);
   return (
     <>
       <div className="text-center text-black">{displayUnit}</div>
       <br />
-      <LineChart
-        xAxis={[{ data: data.map((measurement) => measurement.id) }]}
-        series={[
-          {
-            data: data.map((meausurement) => meausurement.measure),
-          },
-        ]}
-        width={1900}
-        height={400}
-      />
+      <LineChart xAxis={xData} series={yData} width={1900} height={400} />
     </>
   );
 }

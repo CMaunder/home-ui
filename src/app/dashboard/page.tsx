@@ -1,5 +1,14 @@
 import prisma from "../../../server/db";
-import MuiLineChart from "./muiLineChart";
+import RechartLine from "./rechartLine";
+
+type Measurement = {
+  id: number;
+  insertedAt: Date;
+  recordedAt: string;
+  measure: number;
+  unitId: number;
+  deviceId: number;
+};
 
 export default async function Dashboard() {
   let measurements = await prisma.measurement.findMany({
@@ -22,10 +31,10 @@ export default async function Dashboard() {
     (measurement) => measurement.unitId === 2
   );
   return (
-    <div>
-      <div>Dashboard</div>
-      <MuiLineChart data={temperatureMeasurements} displayUnit="Temperature" />
-      <MuiLineChart data={humidityMeasurements} displayUnit="Humidity" />
-    </div>
+    <>
+      <h2>Dashboard</h2>
+      <RechartLine data={temperatureMeasurements} name={"Temperature"} />
+      <RechartLine data={humidityMeasurements} name={"Humidity"} />
+    </>
   );
 }
